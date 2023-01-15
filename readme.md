@@ -21,4 +21,14 @@ https://github.com/umutderebek/Kubernetes-configs/blob/main/first.yaml
 
     kubectl get services -n httpd-namespace-inosas
 ----
-6-)
+kubectl get po -A
+--
+kubectl get svc
+--
+kubectl describe deployments hello-world
+--
+kubectl get services --all-namespaces
+--
+kubectl delete services my-service
+kubectl delete pods --podname
+
