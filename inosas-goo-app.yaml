@@ -1,13 +1,31 @@
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: inosas-goo-app
-  namespace: inosas-goo-app
-  spec:
-    containers:
-      - name: inosas-goo-app-server
-        image: php:8.1.14-apache
-        ports:
-          - protocol: TCP
-            port: 80
----
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: inosas-goo-app
+  template:
+    metadata:
+      labels:
+        app: inosas-goo-app
+    spec:
+      containers:
+        - name: inosas-goo-app
+          image: php:8.1.14-apache
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: inosas-goo-app-code
+              mountPath: /var/www/html
+          env:
+            - name: PHP_INI_DIR
+              value: /usr/local/etc/php
+            - name: APACHE_DOCUMENT_ROOT
+              value: /var/www/html
+      volumes:
+        - name: inosas-goo-app-code
+          configMap:
+            name: inosas-goo-app-code
