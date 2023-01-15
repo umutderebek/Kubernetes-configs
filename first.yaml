@@ -15,9 +15,9 @@ spec:
         app.kubernetes.io/name: load-balancer-example
     spec:
       containers:
-      - image: gcr.io/google-samples/node-hello:1.0
-        name: hello-world
-        ports:
-        - containerPort: 8080
-        externalIPs:
-        - 164.92.153.53
+        - image: gcr.io/google-samples/node-hello:1.0
+          name: hello-world
+          ports:
+            - containerPort: 8080
+          externalIPs:
+            - 164.92.153.53
