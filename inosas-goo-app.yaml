@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Service
 metadata:
   name: inosas-goo-app
 spec:
@@ -29,3 +29,4 @@ spec:
         - name: inosas-goo-app-code
           configMap:
             name: inosas-goo-app-code
+---
