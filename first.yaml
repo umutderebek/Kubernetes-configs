@@ -6,9 +6,9 @@ spec:
   selector:
     app: my-app
   ports:
-  - name: http
-    port: 80
-    targetPort: 8080
+    - name: http
+      port: 80
+      targetPort: 8080
   type: ClusterIP
   externalIPs:
-  - 164.92.153.53
+    - 164.92.153.53
