@@ -4,14 +4,11 @@ metadata:
   name: my-service
 spec:
   selector:
-    app.kubernetes.io/name: MyApp
+    app: my-app
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 9376
-  clusterIP: 10.0.171.239
-  type: LoadBalancer
-status:
-  loadBalancer:
-    ingress:
-      - ip: 164.92.153.53
+  - name: http
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+  externalIPs:
+  - 164.92.153.53
