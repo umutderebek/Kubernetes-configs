@@ -1,40 +1,24 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: test-deployment
-  labels:
-    app: apache
-spec:
-  selector:
-    matchLabels:
-      app: test
-  replicas: 1 # tells deployment to run 2 pods matching the template
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      containers:
-        - name: test
-          image: ubuntu:20.04
-          command: ["/bin/sh", "-c", "apt update -y && apt install -y apache2 && service apache2 start && tail -f /dev/null"]
-          ports:
-            - name: http
-              containerPort: 80
-          env:
-            - name: DEBIAN_FRONTEND
-              value: noninteractive
+  name: my-config
+data:
+  documentroot: /var/www/html
 ---
 apiVersion: v1
-kind: Service
+kind: Pod
 metadata:
-  name: apache-service
+  name: my-pod
 spec:
-  selector:
-    app: test
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: http
-      # nodePort: 30001
+  containers:
+  - name: my-container
+    image: my-php-image:8.1
+    volumeMounts:
+    - name: html-content
+      mountPath: /var/www/html
+      subPath: documentroot
+  volumes:
+  - name: html-content
+    configMap:
+      name: my-config
+---      
