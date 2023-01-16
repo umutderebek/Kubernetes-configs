@@ -1,24 +1,21 @@
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-config
-data:
-  documentroot: /var/www/html
----
-apiVersion: v1
 kind: Pod
 metadata:
-  name: my-pod
+  name: my-php-app
 spec:
   containers:
-  - name: my-container
-    image: my-php-image:8.1
+  - name: my-php-app-container
+    image: php:8.1-apache
+    env:
+    - name: DOCUMENT_ROOT
+      value: /var/www/html
+    ports:
+    - containerPort: 80
     volumeMounts:
-    - name: html-content
+    - name: my-app-files
       mountPath: /var/www/html
-      subPath: documentroot
   volumes:
-  - name: html-content
+  - name: my-app-files
     configMap:
-      name: my-config
----      
+      name: my-app-files
+---
