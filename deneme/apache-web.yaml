@@ -6,21 +6,20 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: apache-web
+      env: apache-web
   template:
     metadata:
+      name: apache-web
       labels:
-        app: apache-web
+        env: apache-web
     spec:
       containers:
-      - name: apache-web
-        image: httpd:2.4
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: apache-web-data
-          mountPath: /var/www/html
+        - name: apache-web
+          image: httpd:2.4
+          volumeMounts:
+            - name: apache-web-data
+              mountPath: /var/www/html
       volumes:
-      - name: apache-web-data
-        persistentVolumeClaim:
-          claimName: apache-web-data-pvc
+        - name: apache-web-data
+          persistentVolumeClaim:
+            claimName: apache-web-data-pvc
