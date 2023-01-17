@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: apache-web
 spec:
-  selector:
-    app: apache-web
+  type: NodePort
   ports:
-  - name: http
-    port: 80
-    targetPort: 80
-  type: ClusterIP
+    - targetPort: 80
+      port: 80
+      nodePort: 30009
+  selector:
+    env: apache-web
