@@ -14,12 +14,12 @@ spec:
         env: apache-web
     spec:
       volumes:
-        - name: apache-web
+        - name: apache-web-data
           persistentVolumeClaim:
-            claimName: frontend-pvc
+            claimName: apache-web-data-pvc
       containers:
-      - name: frontend
+      - name: apache-web
         image: httpd:2.4
         volumeMounts:
           - mountPath: /var/www/html
-            name: apache-web
+            name: apache-web-data
