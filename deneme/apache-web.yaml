@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apache-web
+  template:
+    metadata:
+      labels:
+        app: apache-web
+    spec:
+      containers:
+      - name: apache-web
+        image: httpd:2.4
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: apache-web-data
+          mountPath: /var/www/html
+      volumes:
+      - name: apache-web-data
+        persistentVolumeClaim:
+          claimName: apache-web-data-pvc
