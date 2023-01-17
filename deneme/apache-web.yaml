@@ -13,13 +13,13 @@ spec:
       labels:
         env: apache-web
     spec:
-      containers:
-        - name: apache-web
-          image: httpd:2.4
-          volumeMounts:
-            - name: apache-web-data
-              mountPath: /var/www/html
       volumes:
-        - name: apache-web-data
+        - name: apache-web
           persistentVolumeClaim:
-            claimName: apache-web-data-pvc
+            claimName: frontend-pvc
+      containers:
+      - name: frontend
+        image: ragh19/phpproject:web_v1
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: apache-web
