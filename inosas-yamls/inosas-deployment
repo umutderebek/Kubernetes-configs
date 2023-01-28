@@ -1,0 +1,103 @@
+sss
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: inosas
+
+  labels:
+    app: inosas
+
+spec:
+  ports:
+    - port: 80
+
+  selector:
+    app: inosas
+
+    tier: frontend
+
+  type: LoadBalancer
+
+---
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+  name: wp-pv-claim
+
+  labels:
+    app: inosas
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: inosas
+
+  labels:
+    app: inosas
+
+spec:
+  selector:
+    matchLabels:
+      app: inosas
+
+      tier: frontend
+
+  strategy:
+    type: Recreate
+
+  template:
+    metadata:
+      labels:
+        app: inosas
+
+        tier: frontend
+
+    spec:
+      containers:
+        - image: httpd:8.1
+
+          name: inosas
+
+          env:
+            - name: WORDPRESS_DB_HOST
+
+              value: wordpress-mysql
+
+            - name: WORDPRESS_DB_PASSWORD
+
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+
+                  key: password
+
+          ports:
+            - containerPort: 80
+
+              name: inosas
+
+          volumeMounts:
+            - name: inosas-persistent-storage
+
+              mountPath: /var/www/html
+
+      volumes:
+        - name: inosas-persistent-storage
+
+          persistentVolumeClaim:
+            claimName: wp-pv-claim
