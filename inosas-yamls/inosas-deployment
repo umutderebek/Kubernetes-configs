@@ -68,7 +68,7 @@ spec:
 
     spec:
       containers:
-        - image: httpd:8.1
+        - image: php:8.1-apache
 
           name: inosas
 
