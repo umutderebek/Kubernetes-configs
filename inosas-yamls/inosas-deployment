@@ -1,87 +1,59 @@
 apiVersion: v1
-
 kind: Service
-
 metadata:
   name: goo
-
   labels:
     app: goo
-
 spec:
   ports:
     - port: 80
-
   selector:
     app: goo
-
     tier: frontend
-
   type: LoadBalancer
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: goo-pv-claim
-
   labels:
     app: goo
-
 spec:
   accessModes:
     - ReadWriteOnce
-
   resources:
     requests:
       storage: 20Gi
-
 ---
 apiVersion: apps/v1
-
 kind: Deployment
-
 metadata:
   name: goo
-
   labels:
     app: goo
-
 spec:
   selector:
     matchLabels:
       app: goo
-
       tier: frontend
-
   strategy:
     type: Recreate
-
   template:
     metadata:
       labels:
         app: goo
-
         tier: frontend
-
     spec:
       containers
         - image: php:8.1-apache
-
           name: goo
-
           ports:
             - containerPort: 80
-
               name: goo
-
           volumeMounts:
             - name: goo-persistent-storage
-
               mountPath: /var/www/html
-
       volumes:
         - name: goo-persistent-storage
-
           persistentVolumeClaim:
             claimName: goo-pv-claim
