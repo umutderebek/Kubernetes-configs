@@ -3,17 +3,17 @@ apiVersion: v1
 kind: Service
 
 metadata:
-  name: inosas
+  name: goo
 
   labels:
-    app: inosas
+    app: goo
 
 spec:
   ports:
     - port: 80
 
   selector:
-    app: inosas
+    app: goo
 
     tier: frontend
 
@@ -21,14 +21,12 @@ spec:
 
 ---
 apiVersion: v1
-
 kind: PersistentVolumeClaim
-
 metadata:
-  name: wp-pv-claim
+  name: goo-pv-claim
 
   labels:
-    app: inosas
+    app: goo
 
 spec:
   accessModes:
@@ -44,15 +42,15 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: inosas
+  name: goo
 
   labels:
-    app: inosas
+    app: goo
 
 spec:
   selector:
     matchLabels:
-      app: inosas
+      app: goo
 
       tier: frontend
 
@@ -62,41 +60,28 @@ spec:
   template:
     metadata:
       labels:
-        app: inosas
+        app: goo
 
         tier: frontend
 
     spec:
-      containers:
+      containers
         - image: php:8.1-apache
 
-          name: inosas
-
-          env:
-            - name: WORDPRESS_DB_HOST
-
-              value: wordpress-mysql
-
-            - name: WORDPRESS_DB_PASSWORD
-
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-pass
-
-                  key: password
+          name: goo
 
           ports:
             - containerPort: 80
 
-              name: inosas
+              name: goo
 
           volumeMounts:
-            - name: inosas-persistent-storage
+            - name: goo-persistent-storage
 
               mountPath: /var/www/html
 
       volumes:
-        - name: inosas-persistent-storage
+        - name: goo-persistent-storage
 
           persistentVolumeClaim:
-            claimName: wp-pv-claim
+            claimName: goo-pv-claim
