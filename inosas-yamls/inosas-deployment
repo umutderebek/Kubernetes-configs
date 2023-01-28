@@ -1,4 +1,3 @@
-sss
 apiVersion: v1
 
 kind: Service
